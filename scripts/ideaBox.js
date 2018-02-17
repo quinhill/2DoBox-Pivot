@@ -8,7 +8,6 @@ $('.card-area').on('click', '.downvote-button', downvote);
 $('.card-area').on('keyup', '.card-title', editTitle);
 $('.card-area').on('keyup', '.card-body', editBody);
 $('.search-input').on('keyup', filterCards);
-$(".smush").on('click', smush);
 
 function createCard(newCard) {
   return (`
@@ -135,9 +134,3 @@ function searchCards(cards, searchVal) {
     return 'none';    
   };
 };
-
-function smush() {
-  window.open(
-    'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-  );
-}
