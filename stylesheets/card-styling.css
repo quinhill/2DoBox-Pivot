@@ -1,0 +1,35 @@
+.card-container {
+  border-bottom: 1px solid #D1D3D4;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0 auto 20px auto;
+  padding-bottom: 20px;
+  width: 450px;
+}
+
+.card-title {
+  color: #6D6E71;
+  font-family: 'Roboto Slab', serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.card-title,
+.quality-text {
+  display: inline;
+}
+
+.card-body {
+  color: #939598;
+  line-height: 115%;
+  margin: 15px 0 20px 0;
+}
+
+.quality-text {
+  font-family: 'Roboto Slab', serif;
+  font-size: 14px;
+}
+
+.vote-quality {
+  color: #6D6E71;
+  font-family: 'Open Sans', sans-serif;
+}

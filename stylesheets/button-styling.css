@@ -1,0 +1,59 @@
+.save-button {
+  background-color: #00A79D;
+  border: none;
+  color: #FFFFFF;
+  letter-spacing: 0.5px;
+}
+
+.save-button:hover {
+  background-color: #045E55;
+}
+
+.save-button:disabled {
+  opacity: 0.5;
+}
+
+.save-button:disabled:hover {
+  background-color: #00A79D;
+}
+
+.delete-button,
+.downvote-button, 
+.upvote-button {
+  background-repeat: no-repeat;
+  border: none;
+  height: 20px;
+  width: 20px;
+}
+
+.delete-button {
+  background-image: url("../images/delete.svg");
+  float: right;
+}
+
+.delete-button:hover {
+  background-image: url("../images/delete-hover.svg")
+}
+
+.downvote-button,
+.upvote-button {
+  padding-bottom: 5px;
+}
+
+.upvote-button {
+  background-image: url("../images/upvote.svg");
+  margin-right: 10px;
+}
+
+.upvote-button:hover {
+  background-image: url("../images/upvote-hover.svg");
+}
+
+.downvote-button {
+  background-image: url("../images/downvote.svg");
+  margin-right: 10px;
+}
+
+.downvote-button:hover {
+  background-image: url("../images/downvote-hover.svg");
+}

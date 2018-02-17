@@ -1,0 +1,17 @@
+.header {
+  background-color: #E5F3F2;
+}
+
+.header-title {
+  color: #00A79D;
+  font-family: 'Roboto Slab', serif;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.header-title-b {
+  color: #6D6E71;
+}
