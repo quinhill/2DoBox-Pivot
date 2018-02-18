@@ -4,7 +4,7 @@ $('.title-input').on('keyup', toggleSaveButton);
 $('.body-input').on('keyup', toggleSaveButton);
 $('.card-area').on('click', '.delete-button', deleteCard);
 $('.card-area').on('click', '.upvote-button', upvote);
-$('.card-areas').on('click', '.downvote-button', downvote);
+$('.card-area').on('click', '.downvote-button', downvote);
 $('.card-area').on('keyup', '.card-title', editCard);
 $('.card-area').on('keyup', '.card-body', preventEnter);
 $('.card-area').on('keyup', '.card-body', editCard);
