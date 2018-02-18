@@ -41,3 +41,14 @@
   color: #6D6E71;
   font-family: 'Open Sans', sans-serif;
 }
+
+.card__completed-button {
+      float: right;
+    font-size: 14px;
+    font-family: 'Roboto Slab', serif;
+    margin-top: 2px;
+}
+
+.label__completed-button {
+      margin-right: 5px;
+}
