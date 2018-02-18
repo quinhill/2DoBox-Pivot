@@ -17,12 +17,15 @@ function toggleCheckBox() {
   var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
   var status = $(this).is(':checked')
   if (status === true) {
-ideaStorage.isChecked = 'checked';
+  ideaStorage.isChecked = 'checked'
+  $(this).closest('article').addClass('completed-to-do-style');
   } else {
-    ideaStorage.isChecked = 'unchecked'
+    ideaStorage.isChecked = 'unchecked' 
+$(this).closest('article').removeClass('completed-to-do-style');  
   }
   localStorage.setItem(idFinder, JSON.stringify(ideaStorage)); 
 }
+  
 
 function preventBreak(e) {
   // e.preventDefault();
