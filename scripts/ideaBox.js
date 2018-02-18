@@ -10,6 +10,19 @@ $('.card-area').on('keyup', '.card-body', preventEnter);
 $('.card-area').on('keyup', '.card-body', editCard);
 $('.search-input').on('keyup', filterCards);
 $('.body-input').on('keyup', preventBreak);
+$('.completed-button').on('change', toggleCheckBox);
+
+function toggleCheckBox() {
+  var idFinder = $(this).closest('article').attr('id');
+  var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
+  var status = $(this).is(':checked')
+  if (status === true) {
+ideaStorage.isChecked = 'checked';
+  } else {
+    ideaStorage.isChecked = 'unchecked'
+  }
+  localStorage.setItem(idFinder, JSON.stringify(ideaStorage)); 
+}
 
 function preventBreak(e) {
   // e.preventDefault();
@@ -33,7 +46,7 @@ function createCard(newCard) {
       <p class="card-body" contenteditable="true">${newCard.body}</p>
       <button class="button upvote-button" aria-label="upvote card"></button>
       <button class="button downvote-button" aria-label="downvote card"></button>
-      <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p><form class="card__completed-button"><label for="completed-button" class="label__completed-button">Completed</label><input type="checkbox" value="Completed" class="button completed-button"></input></form>
+      <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p><form class="card__completed-button"><label for="completed-button" class="label__completed-button">Completed</label><input type="checkbox" value="Completed" class="button completed-button" ${newCard.isChecked}></input></form>
     </article>
   `);
 }
@@ -43,6 +56,7 @@ function CardFactory(title, body) {
   this.title = title;
   this.body = body;
   this.voteQuality = 'Normal';
+  this.isChecked = 'unchecked';
 }
 
 function prependCard() {
