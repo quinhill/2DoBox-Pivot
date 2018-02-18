@@ -6,7 +6,7 @@ $('.card-area').on('click', '.delete-button', deleteCard);
 $('.card-area').on('click', '.upvote-button', upvote);
 $('.card-areas').on('click', '.downvote-button', downvote);
 $('.card-area').on('keyup', '.card-title', editCard);
-// $('.card-area').on('keyup', '.card-title', preventEnter);
+$('.card-area').on('keyup', '.card-body', preventEnter);
 $('.card-area').on('keyup', '.card-body', editCard);
 $('.search-input').on('keyup', filterCards);
 $('.body-input').on('keyup', preventBreak);
@@ -18,12 +18,12 @@ if (e.keyCode === 13) {
 }
 }
 
-// function preventEnter(e) {
-//   if (e.keyCode === 13) {
-//     e.preventDefault();
-//     $('title-input').focus();
-//   }
-// }
+function preventEnter(e) {
+  if (e.keyCode === 13) {
+    e.preventDefault();
+    $('.title-input').focus();
+  }
+}
 
 function createCard(newCard) {
   return (`
@@ -33,7 +33,7 @@ function createCard(newCard) {
       <p class="card-body" contenteditable="true">${newCard.body}</p>
       <button class="button upvote-button" aria-label="upvote card"></button>
       <button class="button downvote-button" aria-label="downvote card"></button>
-      <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p>
+      <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p><form class="card__completed-button"><label for="completed-button" class="label__completed-button">Completed</label><input type="checkbox" value="Completed" class="button completed-button"></input></form>
     </article>
   `);
 }
@@ -50,8 +50,9 @@ function prependCard() {
   var stringifyCard = JSON.stringify(newCard);
   localStorage.setItem(newCard.id, stringifyCard);
   $('.card-area').prepend(createCard(newCard));
-  $('title-input').focus();
   toggleSaveButton();
+  $('.title-input').focus();
+  
 }
 
 function getIdeas() {
