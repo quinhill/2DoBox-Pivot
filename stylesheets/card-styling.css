@@ -4,6 +4,8 @@
   margin: 0 auto 20px auto;
   padding-bottom: 20px;
   width: 450px;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .card-title {
@@ -51,4 +53,10 @@
 
 .label__completed-button {
       margin-right: 5px;
+}
+
+.completed-to-do-style {
+  background-color: #78cdc8;
+  text-decoration: line-through;
+  text-decoration-color: #d1d3d4;
 }
