@@ -4,7 +4,7 @@ $('.title-input').on('keyup', toggleSaveButton);
 $('.body-input').on('keyup', toggleSaveButton);
 $('.card-area').on('click', '.delete-button', deleteCard);
 $('.card-area').on('click', '.upvote-button', upvote);
-$('.card-area').on('click', '.downvote-button', downvote);
+$('.card-areas').on('click', '.downvote-button', downvote);
 $('.card-area').on('keyup', '.card-title', editCard);
 // $('.card-area').on('keyup', '.card-title', preventEnter);
 $('.card-area').on('keyup', '.card-body', editCard);
@@ -36,14 +36,14 @@ function createCard(newCard) {
       <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p>
     </article>
   `);
-};
+}
 
 function CardFactory(title, body) {
   this.id = $.now();
   this.title = title;
   this.body = body;
   this.voteQuality = 'Normal';
-};
+}
 
 function prependCard() {
   var newCard = new CardFactory($('.title-input').val(), $('.body-input').val());
@@ -52,8 +52,7 @@ function prependCard() {
   $('.card-area').prepend(createCard(newCard));
   $('title-input').focus();
   toggleSaveButton();
-
-};
+}
 
 function getIdeas() {
   $.each(localStorage, function (index, element) {
@@ -61,7 +60,7 @@ function getIdeas() {
     var getIdea = JSON.parse(localStorage.getItem(index));
     $('.card-area').prepend(createCard(getIdea));    
   }});
-};
+}
 
 function toggleSaveButton() {
   if ($('.title-input').val() && $('.body-input').val()) {
@@ -69,12 +68,12 @@ function toggleSaveButton() {
   } else {
     $('.save-button').prop('disabled', true);
   }
-};
+}
 
 function deleteCard() {
   localStorage.removeItem($(this).parent()[0].id);
   $(this).parent().remove();
-};
+}
 
 
 function upvote() {
@@ -88,7 +87,7 @@ function upvote() {
   voteStorage.voteQuality = qualityValues[i + 1];
   localStorage.setItem(idFinder, JSON.stringify(voteStorage));
 }
-};
+}
 
 function downvote() {
   var qualityValues = ['None', 'Low', 'Normal', 'High', 'Critical'];
@@ -100,11 +99,11 @@ function downvote() {
   voteText.text(qualityValues[i - 1]);
   voteStorage.voteQuality = qualityValues[i - 1];
   localStorage.setItem(idFinder, JSON.stringify(voteStorage));
-};
+}
 }
 
 function editCard(e) {
-  var idFinder = $(this).closest('article').attr('id')
+  var idFinder = $(this).closest('article').attr('id');
   var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
   if ($(e.target).is('h2.card-title')) {
     ideaStorage.title = $(this).text();
@@ -121,7 +120,7 @@ function filterCards(e) {
   $.each($('.card-container'), function(index, element) {
     element.style.display = searchCards(element.children, searchValue);
   });
-};
+}
 
 function searchCards(cards, searchVal) {  
   if (cards[0].innerText.toLowerCase().includes(searchVal) 
@@ -130,5 +129,5 @@ function searchCards(cards, searchVal) {
     return 'block';
   } else {
     return 'none';    
-  };
-};
+  }
+}
