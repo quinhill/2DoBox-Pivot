@@ -17,7 +17,7 @@ function createCard(newCard) {
       <p class="card-body" contenteditable="true">${newCard.body}</p>
       <button class="button upvote-button" aria-label="upvote card"></button>
       <button class="button downvote-button" aria-label="downvote card"></button>
-      <p class="quality-text" aria-label="quality ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">quality: <span class="vote-quality">${newCard.voteQuality}</span></p>
+      <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p>
     </article>
   `);
 };
@@ -26,7 +26,7 @@ function CardFactory(title, body) {
   this.id = $.now();
   this.title = title;
   this.body = body;
-  this.voteQuality = 'swill';
+  this.voteQuality = 'Normal';
 };
 
 function prependCard(e) {
@@ -65,57 +65,57 @@ function deleteCard() {
   $(this).parent().remove();
 };
 
+
 function upvote() {
-  var voteText = $(this).next().next().children();
-  var idFinder = $(this).parent()[0].id;
+  var qualityValues = ['None', 'Low', 'Normal', 'High', 'Critical'];
+  var voteText = $(this).closest('article').find('.vote-quality');
+  var idFinder = $(this).closest('article').attr('id');
   var voteStorage = JSON.parse(localStorage.getItem(idFinder));
-   if (voteText.text() === 'swill') {
-      voteText.text('plausible');
-      voteStorage.voteQuality = 'plausible';
-    } else if (voteText.text() === 'plausible') {
-      voteText.text('genius');
-      voteStorage.voteQuality = 'genius';
-    };
+  var i = qualityValues.indexOf(voteStorage.voteQuality);
+  if (i <= 3) {
+  voteText.text(qualityValues[i + 1]);
+  voteStorage.voteQuality = qualityValues[i + 1];
   localStorage.setItem(idFinder, JSON.stringify(voteStorage));
+}
 };
 
 function downvote() {
-  var voteText = $(this).next().children();
-  var idFinder = $(this).parent()[0].id;
+  var qualityValues = ['None', 'Low', 'Normal', 'High', 'Critical'];
+  var voteText = $(this).closest('article').find('.vote-quality');
+  var idFinder = $(this).closest('article').attr('id');
   var voteStorage = JSON.parse(localStorage.getItem(idFinder));
-  if (voteText.text() === 'genius') {
-      voteText.text('plausible');
-      voteStorage.voteQuality = 'plausible'; 
-    } else if (voteText.text() === 'plausible') {
-      voteText.text('swill');
-      voteStorage.voteQuality = 'swill';
-    };
+  var i = qualityValues.indexOf(voteStorage.voteQuality);
+  if (i > 0) {
+  voteText.text(qualityValues[i - 1]);
+  voteStorage.voteQuality = qualityValues[i - 1];
   localStorage.setItem(idFinder, JSON.stringify(voteStorage));
 };
+}
 
 function editTitle(e) {
-  var idFinder = $(this).parent()[0].id;
+  var idFinder = $(this).closest('article').attr('id')
   var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
-  if (e.keyCode === 13 || $('.card-area').blur()) {
-    ideaStorage.title = $('.card-title').text();
-    localStorage.setItem(idFinder, JSON.stringify(ideaStorage));
-  };
-  if (e.keyCode === 13 ){
+  if (e.keyCode === 13) {
+    e.preventDefault();
     $('.title-input').focus();
+  } else {
+    ideaStorage.title = $(this).text();
+    localStorage.setItem(idFinder, JSON.stringify(ideaStorage));
   };
 };
 
-function editBody(e) {
-  var idFinder = $(this).parent()[0].id;
-  var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
-  if (e.keyCode === 13 || $('.card-area').blur()) {
-    ideaStorage.body = $('.card-body').text();
-    localStorage.setItem(idFinder, JSON.stringify(ideaStorage));
-  };
-  if (e.keyCode === 13 ) {
-    $('.title-input').focus();
-  };
-};
+// function editBody(e) {
+//   e.preventDefault();
+//   var idFinder = $(this).parent()[0].id;
+//   var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
+//   if (e.keyCode === 13) {
+//     ideaStorage.body = $(this).text();
+//     localStorage.setItem(idFinder, JSON.stringify(ideaStorage));
+//   };
+//   if (e.keyCode === 13 ) {
+//     $('.title-input').focus();
+//   };
+// };
 
 function filterCards(e) {
   e.preventDefault();

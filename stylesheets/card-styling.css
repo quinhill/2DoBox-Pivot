@@ -13,6 +13,10 @@
   font-weight: 700;
 }
 
+.card-title br {
+  display: none;
+}
+
 .card-title,
 .quality-text {
   display: inline;
@@ -22,6 +26,10 @@
   color: #939598;
   line-height: 115%;
   margin: 15px 0 20px 0;
+}
+
+.card-body br {
+  display: none;
 }
 
 .quality-text {
