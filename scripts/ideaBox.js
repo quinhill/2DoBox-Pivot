@@ -74,9 +74,9 @@ function prependCard() {
 
 function getIdeas() {
   $.each(localStorage, function (index, element) {
-    if (index >= localStorage.length) {
     var getIdea = JSON.parse(localStorage.getItem(index));
-    $('.card-area').prepend(createCard(getIdea));    
+    if (index >= localStorage.length && getIdea.isChecked === 'unchecked') {
+    $('.card-area').prepend(createCard(getIdea));   
   }});
 }
 
