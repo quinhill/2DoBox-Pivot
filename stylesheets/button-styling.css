@@ -57,3 +57,18 @@
 .downvote-button:hover {
   background-image: url("../images/downvote-hover.svg");
 }
+.show-button {
+  display: block;
+  font-size: 17px;
+  margin: 10px;
+  padding: 5px;
+  width: 450px;
+  background-color: #00A79D;
+  border: none;
+  color: #FFFFFF;
+  letter-spacing: 0.5px;
+}
+
+.hidden-button {
+  display: none;
+}

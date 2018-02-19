@@ -11,7 +11,7 @@ $('.card-area').on('keyup', '.card-body', editCard);
 $('.search-input').on('keyup', filterCards);
 $('.body-input').on('keyup', preventBreak);
 $('.completed-button').on('change', toggleCheckBox);
-$('.search__button-show-completed').on('click', showCompleted)
+$('.search__button-show-completed').on('click', showCompleted);
 
 function showCompleted(e) {
   e.preventDefault();
@@ -73,22 +73,39 @@ function CardFactory(title, body) {
   this.isChecked = 'unchecked';
 }
 
-function prependCard() {
+function clearFields() {
+  $('.input').val("");
+  $('.title-input').focus();
+}
+
+function prependCard(e) {
+  e.preventDefault();
   var newCard = new CardFactory($('.title-input').val(), $('.body-input').val());
   var stringifyCard = JSON.stringify(newCard);
   localStorage.setItem(newCard.id, stringifyCard);
+  if(localStorage.length < 11) {
   $('.card-area').prepend(createCard(newCard));
   toggleSaveButton();
-  $('.title-input').focus();
-  
+  clearFields();
+  } else {
+  $('.secret-button').addClass('show-button');
+  $('.secret-button').removeClass('hidden-button');
+    toggleSaveButton();
+    clearFields();
+  };
 }
 
 function getIdeas() {
-  $.each(localStorage, function (index, element) {
-    var getIdea = JSON.parse(localStorage.getItem(index));
-    if (index >= localStorage.length && getIdea.isChecked === 'unchecked') {
-    $('.card-area').prepend(createCard(getIdea));   
-  }});
+  for (var i = 0; i < localStorage.length; i++) {
+    var getIdea = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (i < 11 && getIdea.isChecked === 'unchecked')
+    $('.card-area').prepend(createCard(getIdea));
+}
+  // $.each(localStorage, function (index, element,) {
+  //   var getIdea = JSON.parse(localStorage.getItem(index));
+  //   if (index >= localStorage.length && getIdea.isChecked === 'unchecked') {
+  //   $('.card-area').prepend(createCard(getIdea));   
+  // }});
 }
 
 function toggleSaveButton() {
