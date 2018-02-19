@@ -12,6 +12,18 @@ $('.search-input').on('keyup', filterCards);
 $('.body-input').on('keyup', preventBreak);
 $('.completed-button').on('change', toggleCheckBox);
 $('.search__button-show-completed').on('click', showCompleted);
+$('.secret-button').on('click', showAll);
+$('#dropdown-menu').on('change', qualityFilter)
+
+function showAll() {
+  for (var i = 0; i < localStorage.length; i++) {
+    var getIdea = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (i > 9 && getIdea.isChecked === 'unchecked')
+    $('.card-area').append(createCard(getIdea));
+  $('.secret-button').removeClass('show-button');
+  $('.secret-button').addClass('hidden-button');
+}
+}
 
 function showCompleted(e) {
   e.preventDefault();
@@ -37,6 +49,19 @@ $(this).closest('article').removeClass('completed-to-do-style');
   localStorage.setItem(idFinder, JSON.stringify(ideaStorage)); 
 }
   
+function qualityFilter() {
+  $('.card-container').hide();
+  var $input = document.getElementById('dropdown-menu')
+  var $inputText = $input.options[$input.selectedIndex].text;
+  var array = $('.vote-quality');
+  for (var i = 0; i < array.length; i++) {
+    if ($(array[i]).text().includes($inputText)) {
+      $(array[i]).closest('article').show();
+} else if ($inputText === 'All') {
+  $('.card-container').show()
+}
+}
+}
 
 function preventBreak(e) {
   // e.preventDefault();
@@ -97,9 +122,9 @@ function prependCard(e) {
 
 function getIdeas() {
   for (var i = 0; i < localStorage.length; i++) {
-    var getIdea = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    if (i < 11 && getIdea.isChecked === 'unchecked')
-    $('.card-area').prepend(createCard(getIdea));
+    var parsedIdea = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (i < 11 && parsedIdea.isChecked === 'unchecked')
+    $('.card-area').prepend(createCard(parsedIdea));
 }
   // $.each(localStorage, function (index, element,) {
   //   var getIdea = JSON.parse(localStorage.getItem(index));
