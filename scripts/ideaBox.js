@@ -11,6 +11,17 @@ $('.card-area').on('keyup', '.card-body', editCard);
 $('.search-input').on('keyup', filterCards);
 $('.body-input').on('keyup', preventBreak);
 $('.completed-button').on('change', toggleCheckBox);
+$('.search__button-show-completed').on('click', showCompleted)
+
+function showCompleted(e) {
+  e.preventDefault();
+$.each(localStorage, function (index, element) {
+    var parsedIdea = JSON.parse(localStorage.getItem(index));
+    console.log(parsedIdea);
+    if (index >= localStorage.length && parsedIdea.isChecked === 'checked') {
+    $('.card-area').prepend(createCard(parsedIdea));   
+  }});
+}
 
 function toggleCheckBox() {
   var idFinder = $(this).closest('article').attr('id');
