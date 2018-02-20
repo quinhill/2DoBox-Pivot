@@ -8,6 +8,12 @@
   padding: 5px;
 }
 
+#completed-to-do-style {
+    color: #7dcec8;
+    text-decoration: line-through;
+    text-decoration-color: #000;
+}
+
 .card-title {
   color: #6D6E71;
   font-family: 'Roboto Slab', serif;
@@ -53,12 +59,6 @@
 
 .label__completed-button {
       margin-right: 5px;
-}
-
-.completed-to-do-style {
-  background-color: #78cdc8;
-  text-decoration: line-through;
-  text-decoration-color: #d1d3d4;
 }
 
 .card-area {

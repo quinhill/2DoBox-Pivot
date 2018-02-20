@@ -27,26 +27,29 @@ function showAll() {
 
 function showCompleted(e) {
   e.preventDefault();
-$.each(localStorage, function (index, element) {
-    var parsedIdea = JSON.parse(localStorage.getItem(index));
-    console.log(parsedIdea);
-    if (index >= localStorage.length && parsedIdea.isChecked === 'checked') {
-    $('.card-area').prepend(createCard(parsedIdea));   
-  }});
+// $.each(localStorage, function (index, element) 
+for (var i = 0; i < localStorage.length; i++) {
+    var parsedIdea = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (parsedIdea.isChecked === 'checked') {
+    $('.card-area').prepend(createCard(parsedIdea)); 
+    $(this).closest('article').children().attr('id', 'completed-to-do-style');  
+  }};
 }
+
 
 function toggleCheckBox() {
   var idFinder = $(this).closest('article').attr('id');
   var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
   var status = $(this).is(':checked')
   if (status === true) {
-  ideaStorage.isChecked = 'checked'
-  $(this).closest('article').addClass('completed-to-do-style');
+  ideaStorage.isChecked = 'checked';
+  $(this).closest('article').children().attr('id', 'completed-to-do-style');
+  localStorage.setItem(idFinder, JSON.stringify(ideaStorage));
   } else {
-    ideaStorage.isChecked = 'unchecked' 
-$(this).closest('article').removeClass('completed-to-do-style');  
-  }
-  localStorage.setItem(idFinder, JSON.stringify(ideaStorage)); 
+    ideaStorage.isChecked = 'unchecked'; 
+$(this).closest('article').children().removeAttr('id', 'completed-to-do-style');
+localStorage.setItem(idFinder, JSON.stringify(ideaStorage));  
+  } 
 }
   
 function qualityFilter() {

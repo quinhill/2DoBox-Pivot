@@ -3,6 +3,11 @@
   border: none;
   color: #FFFFFF;
   letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  display: block;
+  font-size: 17px;
+  padding: 5px;
+  width: 450px;
 }
 
 .save-button:hover {
