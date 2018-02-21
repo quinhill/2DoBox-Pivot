@@ -1,17 +1,33 @@
+.card-area {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body {
+  color: #939598;
+  line-height: 115%;
+  margin: 15px 0 20px 0;
+}
+
+.card-body br {
+  display: none;
+}
+
+.card__completed-button {
+  float: right;
+  font-family: 'Roboto Slab', serif;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
 .card-container {
   border-bottom: 1px solid #D1D3D4;
   font-family: 'Open Sans', sans-serif;
   margin: 0 auto 20px auto;
   padding-bottom: 20px;
-  width: 450px;
-  border-radius: 5px;
   padding: 5px;
-}
-
-#completed-to-do-style {
-    color: #7dcec8;
-    text-decoration: line-through;
-    text-decoration-color: #000;
+  width: 450px;
 }
 
 .card-title {
@@ -30,14 +46,8 @@
   display: inline;
 }
 
-.card-body {
-  color: #939598;
-  line-height: 115%;
-  margin: 15px 0 20px 0;
-}
-
-.card-body br {
-  display: none;
+.label__completed-button {
+  margin-right: 5px;
 }
 
 .quality-text {
@@ -50,19 +60,8 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-.card__completed-button {
-      float: right;
-    font-size: 14px;
-    font-family: 'Roboto Slab', serif;
-    margin-top: 2px;
-}
-
-.label__completed-button {
-      margin-right: 5px;
-}
-
-.card-area {
-      display: flex;
-    flex-direction: column;
-    align-items: center;
+#completed-to-do-style {
+  color: #7dcec8;
+  text-decoration: line-through;
+  text-decoration-color: #000;
 }

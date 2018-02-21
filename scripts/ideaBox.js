@@ -10,67 +10,63 @@ $('.card-area').on('keyup', '.card-body', preventEnter);
 $('.card-area').on('keyup', '.card-body', editCard);
 $('.search-input').on('keyup', filterCards);
 $('.body-input').on('keyup', preventBreak);
-$('.completed-button').on('change', toggleCheckBox);
+$('.completed-button').on('input', toggleCheckBox);
 $('.search__button-show-completed').on('click', showCompleted);
 $('.secret-button').on('click', showAll);
 $('#dropdown-menu').on('change', qualityFilter)
 
 function showAll() {
   for (var i = 0; i < localStorage.length; i++) {
-    var getIdea = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    if (i > 9 && getIdea.isChecked === 'unchecked')
-    $('.card-area').append(createCard(getIdea));
-  $('.secret-button').removeClass('show-button');
-  $('.secret-button').addClass('hidden-button');
-}
+    var parsed2Do = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (i > 9 && parsed2Do.isChecked === 'unchecked')
+      $('.card-area').append(createCard(parsed2Do));
+    $('.secret-button').removeClass('show-button');
+    $('.secret-button').addClass('hidden-button');
+  }
 }
 
 function showCompleted(e) {
   e.preventDefault();
-// $.each(localStorage, function (index, element) 
-for (var i = 0; i < localStorage.length; i++) {
-    var parsedIdea = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    if (parsedIdea.isChecked === 'checked') {
-    $('.card-area').prepend(createCard(parsedIdea)); 
-    $(this).closest('article').children().attr('id', 'completed-to-do-style');  
-  }};
-}
+  for (var i = 0; i < localStorage.length; i++) {
+    var parsed2Do = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (parsed2Do.isChecked === 'checked') {
+      $('.card-area').prepend(createCard(parsed2Do)); 
+      $(this).closest('article').children().attr('id', 'completed-to-do-style');  
+    }};
+  }
 
-
-function toggleCheckBox() {
-  var idFinder = $(this).closest('article').attr('id');
-  var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
-  var status = $(this).is(':checked')
-  if (status === true) {
-  ideaStorage.isChecked = 'checked';
-  $(this).closest('article').children().attr('id', 'completed-to-do-style');
-  localStorage.setItem(idFinder, JSON.stringify(ideaStorage));
-  } else {
-    ideaStorage.isChecked = 'unchecked'; 
-$(this).closest('article').children().removeAttr('id', 'completed-to-do-style');
-localStorage.setItem(idFinder, JSON.stringify(ideaStorage));  
-  } 
-}
+  function toggleCheckBox() {
+    var idFinder = $(this).closest('article').attr('id');
+    var parsed2Do = JSON.parse(localStorage.getItem(idFinder));
+    if ($(this).is(':checked') === true) {
+      parsed2Do.isChecked = 'checked';
+      $(this).closest('article').contents().attr('id', 'completed-to-do-style');
+    } else {
+      parsed2Do.isChecked = 'unchecked'; 
+      $(this).closest('article').children().removeAttr('id', 'completed-to-do-style');  
+    } 
+    localStorage.setItem(idFinder, JSON.stringify(parsed2Do));
+  }
   
-function qualityFilter() {
-  $('.card-container').hide();
-  var $input = document.getElementById('dropdown-menu')
-  var $inputText = $input.options[$input.selectedIndex].text;
-  var array = $('.vote-quality');
-  for (var i = 0; i < array.length; i++) {
-    if ($(array[i]).text().includes($inputText)) {
-      $(array[i]).closest('article').show();
-} else if ($inputText === 'All') {
-  $('.card-container').show()
-}
-}
-}
+  function qualityFilter() {
+    $('.card-container').hide();
+    var $input = document.getElementById('dropdown-menu')
+    var $inputText = $input.options[$input.selectedIndex].text;
+    var array = $('.vote-quality');
+    for (var i = 0; i < array.length; i++) {
+      if ($(array[i]).text().includes($inputText)) {
+        $(array[i]).closest('article').show();
+      } else if ($inputText === 'All') {
+        $('.card-container').show()
+      }
+    }
+  }
 
-function preventBreak(e) {
+  function preventBreak(e) {
   // e.preventDefault();
-if (e.keyCode === 13) {
-  $('.save-button').click();
-}
+  if (e.keyCode === 13) {
+    $('.save-button').click();
+  }
 }
 
 function preventEnter(e) {
@@ -83,14 +79,14 @@ function preventEnter(e) {
 function createCard(newCard) {
   return (`
     <article class="card-container" id="${newCard.id}">
-      <h2 class="card-title" contenteditable="true">${newCard.title}</h2>
-      <button class="button delete-button" aria-label="delete card"></button>
-      <p class="card-body" contenteditable="true">${newCard.body}</p>
-      <button class="button upvote-button" aria-label="upvote card"></button>
-      <button class="button downvote-button" aria-label="downvote card"></button>
-      <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p><form class="card__completed-button"><label for="completed-button" class="label__completed-button">Completed</label><input type="checkbox" value="Completed" class="button completed-button" ${newCard.isChecked}></input></form>
+    <h2 class="card-title" contenteditable="true">${newCard.title}</h2>
+    <button class="button delete-button" aria-label="delete card"></button>
+    <p class="card-body" contenteditable="true">${newCard.body}</p>
+    <button class="button upvote-button" aria-label="upvote card"></button>
+    <button class="button downvote-button" aria-label="downvote card"></button>
+    <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p><form class="card__completed-button"><label for="completed-button" class="label__completed-button">Completed</label><input type="checkbox" class="button completed-button" ${newCard.isChecked}></input></form>
     </article>
-  `);
+    `);
 }
 
 function CardFactory(title, body) {
@@ -112,28 +108,27 @@ function prependCard(e) {
   var stringifyCard = JSON.stringify(newCard);
   localStorage.setItem(newCard.id, stringifyCard);
   if(localStorage.length < 11) {
-  $('.card-area').prepend(createCard(newCard));
-  toggleSaveButton();
-  clearFields();
-  } else {
-  $('.secret-button').addClass('show-button');
-  $('.secret-button').removeClass('hidden-button');
+    $('.card-area').prepend(createCard(newCard));
     toggleSaveButton();
     clearFields();
+  } else {
+    showSecretButton();
   };
+}
+
+function showSecretButton() {
+  $('.secret-button').addClass('show-button');
+  $('.secret-button').removeClass('hidden-button');
+  toggleSaveButton();
+  clearFields();
 }
 
 function getIdeas() {
   for (var i = 0; i < localStorage.length; i++) {
-    var parsedIdea = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    if (i < 11 && parsedIdea.isChecked === 'unchecked')
-    $('.card-area').prepend(createCard(parsedIdea));
-}
-  // $.each(localStorage, function (index, element,) {
-  //   var getIdea = JSON.parse(localStorage.getItem(index));
-  //   if (index >= localStorage.length && getIdea.isChecked === 'unchecked') {
-  //   $('.card-area').prepend(createCard(getIdea));   
-  // }});
+    var parsed2Do = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (i < 11 && parsed2Do.isChecked === 'unchecked')
+      $('.card-area').prepend(createCard(parsed2Do));
+  }
 }
 
 function toggleSaveButton() {
@@ -157,10 +152,10 @@ function upvote() {
   var voteStorage = JSON.parse(localStorage.getItem(idFinder));
   var i = qualityValues.indexOf(voteStorage.voteQuality);
   if (i <= 3) {
-  voteText.text(qualityValues[i + 1]);
-  voteStorage.voteQuality = qualityValues[i + 1];
-  localStorage.setItem(idFinder, JSON.stringify(voteStorage));
-}
+    voteText.text(qualityValues[i + 1]);
+    voteStorage.voteQuality = qualityValues[i + 1];
+    localStorage.setItem(idFinder, JSON.stringify(voteStorage));
+  }
 }
 
 function downvote() {
@@ -170,21 +165,21 @@ function downvote() {
   var voteStorage = JSON.parse(localStorage.getItem(idFinder));
   var i = qualityValues.indexOf(voteStorage.voteQuality);
   if (i > 0) {
-  voteText.text(qualityValues[i - 1]);
-  voteStorage.voteQuality = qualityValues[i - 1];
-  localStorage.setItem(idFinder, JSON.stringify(voteStorage));
-}
+    voteText.text(qualityValues[i - 1]);
+    voteStorage.voteQuality = qualityValues[i - 1];
+    localStorage.setItem(idFinder, JSON.stringify(voteStorage));
+  }
 }
 
 function editCard(e) {
   var idFinder = $(this).closest('article').attr('id');
-  var ideaStorage = JSON.parse(localStorage.getItem(idFinder));
+  var parsed2Do = JSON.parse(localStorage.getItem(idFinder));
   if ($(e.target).is('h2.card-title')) {
-    ideaStorage.title = $(this).text();
-    localStorage.setItem(idFinder, JSON.stringify(ideaStorage));
+    parsed2Do.title = $(this).text();
+    localStorage.setItem(idFinder, JSON.stringify(parsed2Do));
   } else if ($(e.target).is('p.card-body')){
-    ideaStorage.body = $(this).text();
-    localStorage.setItem(idFinder, JSON.stringify(ideaStorage));
+    parsed2Do.body = $(this).text();
+    localStorage.setItem(idFinder, JSON.stringify(parsed2Do));
   }
 }
 
@@ -198,10 +193,10 @@ function filterCards(e) {
 
 function searchCards(cards, searchVal) {  
   if (cards[0].innerText.toLowerCase().includes(searchVal) 
-  || cards[2].innerText.toLowerCase().includes(searchVal)
-  || !searchVal) {
+    || cards[2].innerText.toLowerCase().includes(searchVal)
+    || !searchVal) {
     return 'block';
-  } else {
-    return 'none';    
-  }
+} else {
+  return 'none';    
+}
 }

@@ -1,14 +1,13 @@
 @media only screen and (max-width: 550px) {
-  .form-container {
-    width: 90%;
-  }
-
   .body-input,
   .card-container,
   .save-button,
   .search-input,
   .title-input {
     width: 340px;
+  }
+  .form-container {
+    width: 90%;
   }
 }
 
