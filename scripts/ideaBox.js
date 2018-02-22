@@ -10,18 +10,18 @@ $('.card-area').on('keyup', '.card-body', preventEnter);
 $('.card-area').on('keyup', '.card-body', editCard);
 $('.search-input').on('keyup', filterCards);
 $('.body-input').on('keyup', preventBreak);
-$('.completed-button').on('input', toggleCheckBox);
+$('.card-area').on('input', '.completed-button', toggleCheckBox);
 $('.search__button-show-completed').on('click', showCompleted);
 $('.secret-button').on('click', showAll);
 $('#dropdown-menu').on('change', qualityFilter)
 
 function showAll() {
+  $('.card-container').remove();
   for (var i = 0; i < localStorage.length; i++) {
     var parsed2Do = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    if (i > 9 && parsed2Do.isChecked === 'unchecked')
-      $('.card-area').append(createCard(parsed2Do));
-    $('.secret-button').removeClass('show-button');
-    $('.secret-button').addClass('hidden-button');
+    if (parsed2Do.isChecked === 'unchecked') {
+      $('.card-area').prepend(createCard(parsed2Do));
+    }
   }
 }
 
@@ -30,40 +30,46 @@ function showCompleted(e) {
   for (var i = 0; i < localStorage.length; i++) {
     var parsed2Do = JSON.parse(localStorage.getItem(localStorage.key(i)));
     if (parsed2Do.isChecked === 'checked') {
-      $('.card-area').prepend(createCard(parsed2Do)); 
-      $(this).closest('article').children().attr('id', 'completed-to-do-style');  
+      $('.card-area').prepend(createCard(parsed2Do, 'completed-to-do-style')); 
     }};
   }
 
-  function toggleCheckBox() {
-    var idFinder = $(this).closest('article').attr('id');
-    var parsed2Do = JSON.parse(localStorage.getItem(idFinder));
-    if ($(this).is(':checked') === true) {
-      parsed2Do.isChecked = 'checked';
-      $(this).closest('article').contents().attr('id', 'completed-to-do-style');
-    } else {
-      parsed2Do.isChecked = 'unchecked'; 
-      $(this).closest('article').children().removeAttr('id', 'completed-to-do-style');  
-    } 
-    localStorage.setItem(idFinder, JSON.stringify(parsed2Do));
-  }
-  
-  function qualityFilter() {
-    $('.card-container').hide();
-    var $input = document.getElementById('dropdown-menu')
-    var $inputText = $input.options[$input.selectedIndex].text;
-    var array = $('.vote-quality');
-    for (var i = 0; i < array.length; i++) {
-      if ($(array[i]).text().includes($inputText)) {
-        $(array[i]).closest('article').show();
-      } else if ($inputText === 'All') {
-        $('.card-container').show()
-      }
+function toggleCheckBox() {
+  var idFinder = $(this).closest('article').attr('id');
+  var parsed2Do = JSON.parse(localStorage.getItem(idFinder));
+  if ($(this).is(':checked') === true) {
+    addChecked(parsed2Do, this);
+  } else {
+    removeChecked(parsed2Do, this);
+  } 
+  localStorage.setItem(idFinder, JSON.stringify(parsed2Do));
+}
+
+function addChecked(object, newthis) {
+  object.isChecked = 'checked';
+  $(newthis).closest('article').addClass('completed-to-do-style');
+}
+
+function removeChecked(object, newthis) {
+  object.isChecked = 'unchecked'; 
+  $(newthis).closest('article').removeClass('completed-to-do-style');
+}
+
+function qualityFilter() {
+  $('.card-container').hide();
+  var $input = document.getElementById('dropdown-menu')
+  var $inputText = $input.options[$input.selectedIndex].text;
+  var array = $('.vote-quality');
+  for (var i = 0; i < array.length; i++) {
+    if ($(array[i]).text().includes($inputText)) {
+      $(array[i]).closest('article').show();
+    } else if ($inputText === 'All') {
+      $('.card-container').show()
     }
   }
+}
 
-  function preventBreak(e) {
-  // e.preventDefault();
+function preventBreak(e) {
   if (e.keyCode === 13) {
     $('.save-button').click();
   }
@@ -76,15 +82,15 @@ function preventEnter(e) {
   }
 }
 
-function createCard(newCard) {
+function createCard(newCard, classname) {
   return (`
-    <article class="card-container" id="${newCard.id}">
+    <article class="card-container ${classname}" id="${newCard.id}">
     <h2 class="card-title" contenteditable="true">${newCard.title}</h2>
     <button class="button delete-button" aria-label="delete card"></button>
     <p class="card-body" contenteditable="true">${newCard.body}</p>
     <button class="button upvote-button" aria-label="upvote card"></button>
     <button class="button downvote-button" aria-label="downvote card"></button>
-    <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p><form class="card__completed-button"><label for="completed-button" class="label__completed-button">Completed</label><input type="checkbox" class="button completed-button" ${newCard.isChecked}></input></form>
+    <p class="quality-text" aria-label="Importance ${newCard.voteQuality}" tabindex="0" aria-live="assertive" aria-atomic="true">Importance: <span class="vote-quality">${newCard.voteQuality}</span></p><form class="card__completed-button"><label for="completed-button" class="label__completed-button">Completed</label><input type="checkbox" aria-label="completed button" class="button completed-button" ${newCard.isChecked}></input></form>
     </article>
     `);
 }
@@ -108,28 +114,52 @@ function prependCard(e) {
   var stringifyCard = JSON.stringify(newCard);
   localStorage.setItem(newCard.id, stringifyCard);
   if(localStorage.length < 11) {
-    $('.card-area').prepend(createCard(newCard));
-    toggleSaveButton();
-    clearFields();
+    normalAddCards();
+    resetFields();
   } else {
+    addNewestCards();
     showSecretButton();
   };
+}
+
+function resetFields() {
+  toggleSaveButton();
+  clearFields();
 }
 
 function showSecretButton() {
   $('.secret-button').addClass('show-button');
   $('.secret-button').removeClass('hidden-button');
-  toggleSaveButton();
-  clearFields();
+  resetFields();
 }
 
 function getIdeas() {
-  for (var i = 0; i < localStorage.length; i++) {
-    var parsed2Do = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    if (i < 11 && parsed2Do.isChecked === 'unchecked')
-      $('.card-area').prepend(createCard(parsed2Do));
+  if (localStorage.length > 10){
+    addNewestCards();
+  } else {
+    normalAddCards();
   }
 }
+
+function normalAddCards() {
+  $('.card-container').remove();
+  for (var i = 0; i < localStorage.length; i++) {
+    var parsed2Do = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (parsed2Do.isChecked === 'unchecked') {
+      $('.card-area').prepend(createCard(parsed2Do));
+    }
+  }
+}
+
+function addNewestCards() {
+  $('.card-container').remove();
+  for (var i = (localStorage.length - 10); i < localStorage.length; i++) {
+    var parsed2Do = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (parsed2Do.isChecked === 'unchecked') {
+      $('.card-area').prepend(createCard(parsed2Do));
+      showSecretButton();
+    }}
+  }
 
 function toggleSaveButton() {
   if ($('.title-input').val() && $('.body-input').val()) {
@@ -152,10 +182,14 @@ function upvote() {
   var voteStorage = JSON.parse(localStorage.getItem(idFinder));
   var i = qualityValues.indexOf(voteStorage.voteQuality);
   if (i <= 3) {
-    voteText.text(qualityValues[i + 1]);
-    voteStorage.voteQuality = qualityValues[i + 1];
-    localStorage.setItem(idFinder, JSON.stringify(voteStorage));
+    doUpvote(voteText, voteStorage, qualityValues, idFinder, i);
   }
+}
+
+function doUpvote(voteText, voteStorage, qualityValues, idFinder, i) {
+  voteText.text(qualityValues[i + 1]);
+  voteStorage.voteQuality = qualityValues[i + 1];
+  localStorage.setItem(idFinder, JSON.stringify(voteStorage));
 }
 
 function downvote() {
@@ -165,10 +199,14 @@ function downvote() {
   var voteStorage = JSON.parse(localStorage.getItem(idFinder));
   var i = qualityValues.indexOf(voteStorage.voteQuality);
   if (i > 0) {
-    voteText.text(qualityValues[i - 1]);
-    voteStorage.voteQuality = qualityValues[i - 1];
-    localStorage.setItem(idFinder, JSON.stringify(voteStorage));
+    doDownvote(voteText, voteStorage, qualityValues, idFinder, i);
   }
+}
+
+function doDownvote(voteText, voteStorage, qualityValues, idFinder, i) {
+  voteText.text(qualityValues[i - 1]);
+  voteStorage.voteQuality = qualityValues[i - 1];
+  localStorage.setItem(idFinder, JSON.stringify(voteStorage));
 }
 
 function editCard(e) {

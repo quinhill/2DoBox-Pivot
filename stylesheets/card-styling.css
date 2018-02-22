@@ -60,8 +60,8 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-#completed-to-do-style {
-  color: #7dcec8;
+.completed-to-do-style {
+  opacity: .4;
   text-decoration: line-through;
   text-decoration-color: #000;
 }
